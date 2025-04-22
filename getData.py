@@ -15,3 +15,4 @@ def getData(url):
 if __name__ == "__main__":
     url = "https://jsonplaceholder.typicode.com/users"
     getData(url)
+# This code retrieves data from a given URL, converts it to a pandas DataFrame, and saves it as a CSV file. It also checks if the request was successful before proceeding with the conversion and saving process.
