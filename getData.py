@@ -7,7 +7,7 @@ def getData(url):
     if data.status_code == 200:
         data = data.json()
         data = pd.DataFrame(data)
-        data.to_csv('C:/Users/lenovo/Desktop/Actions/Data/data.csv', index=False)
+        data.to_csv('Data/data.csv', index=False)
         print("Data saved to data.csv")
     else:
         print("Failed to retrieve data. Status code:", data.status_code)
