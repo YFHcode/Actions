@@ -1,0 +1,36 @@
+name: "API data pipeline"
+
+on:
+  schedule:
+    - cron: "*/2 * * * *" # Every 2 minutes
+jobs:
+  check-api-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: "checkout code"
+        uses: actions/checkout@v3
+      - name: "set up python"
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: install dependencies
+        run:  pip install -r requirements.txt
+      - name: run script
+        run: python getData.py
+      - name: run tests
+        run: pytest tests/test_getData.py
+      - name: upload csv data
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-data
+          path: data/data.csv
+      - name: commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add output/cleaned.csv
+          git commit -m "Update cleaned CSV [automated]" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
